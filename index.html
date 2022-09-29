@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner</title>
+    <style>
+        body{
+            margin: 0px;
+            position: relative;
+            height: 2000px;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        .banner{
+            position: sticky;
+            top: 10px;
+            font-family: 'Arial Narrow', Arial, sans-serif;
+            font-weight: 500;
+            background: #ff6038;
+            border-radius: 5px;
+            color: white;
+            width: 95%;
+            margin: auto;
+            display: flex;
+            justify-content: space-around;
+            
+        }
+        .text{
+            margin: auto 10px;
+        }
+        .counter{
+            display: flex;
+        }
+        .counterItems{
+            margin: 10px;
+        }
+        .numberCntnr{
+            background: white;
+            font-size: x-large;
+            font-weight: 800;
+            color: black;
+            text-align: center;
+            width: max-content;
+            padding: 3px 5px;
+            margin: auto;
+            border-radius: 5px;
+        }
+        .textCntnr{
+            font-size: small;
+            text-align: center;
+        }
+        .button{
+            background: rgb(234, 234, 234);
+            padding: 10px 10px;
+            margin: auto 0px;
+            border-radius: 5px;
+            width: max-content;
+            min-width: max-content;
+            height: max-content;
+            font-weight: 600;  
+        }
+        .button:hover{
+            cursor: pointer;
+        }
+        @media (max-width:650px){
+            .banner{
+                width: calc(100% - 20px);
+                padding: 10px;
+                font-size: small;
+            }
+            .counter{
+                width: max-content;
+                margin: auto;
+            }
+            .counterItems{
+                 margin: 5px;
+            }
+            .numberCntnr{
+                font-size: small;
+            }
+            .textCntnr{
+                font-size: x-small;
+            }
+        }
+    </style>
+</head>
+<body>
+   <section class="banner">
+    <div class="text">
+        <b>This offer expires in: </b><br>
+        See "general" feedback above.
+    </div>
+    <div class="counter">
+        <div class="counterItems">
+            <div id="days" class="numberCntnr">
+                 00
+            </div>
+            <div class="textCntnr">
+                Days
+            </div>
+        </div>
+        <div class="counterItems">
+            <div id="hours" class="numberCntnr">
+                 00
+            </div>
+            <div class="textCntnr">
+               Hours
+            </div>
+        </div>
+        <div class="counterItems">
+            <div  id="minutes" class="numberCntnr">
+                 00
+            </div>
+            <div class="textCntnr">
+                minutes
+            </div>
+        </div>
+        <div class="counterItems">
+            <div id="seconds" class="numberCntnr">
+                 00
+            </div>
+            <div class="textCntnr">
+                Seconds
+            </div>
+        </div>
+    </div>
+    <div class="button">
+        <a href="#">Claim Promo</a>
+    </div>      
+   </section>
+
+   <script>
+    const days=document.getElementById('days')
+    const hours=document.getElementById('hours')
+    const minutes=document.getElementById('minutes')
+    const seconds=document.getElementById('seconds')
+    let cookies=document.cookie.split(';')
+    let timeCookie=0;
+    cookies.map(e=>{(e.startsWith('counter'))&&(timeCookie=e.split('=')[1]*1)})
+    //timeCookie=new Date().getTime()-24*60*60*1000+6*1000
+    counter()
+    setInterval(counter,1000) 
+  
+    function counter(){
+        let time=24*60*60*1000-new Date().getTime()+timeCookie
+        if(time>0&&time<24*60*60*1000){
+            let h=time/(60*60*1000*100)
+            let m=(time%(60*60*1000))/(60*1000*100)
+            let s=time%(60*1000)/(1000*100)
+            hours.innerHTML=h.toString().slice(2,4)||'00'
+            minutes.innerHTML=m.toString().slice(2,4)||'00'
+            seconds.innerHTML=s.toString().slice(2,4)||'00'
+        }
+        else {
+            timeCookie=new Date().getTime()
+            expires=new Date(timeCookie+24*60*60*1000)
+            counter()
+            document.cookie="counter="+timeCookie+"; expires="+expires.toUTCString()+";"
+        }
+    }
+
+   </script>
+    
+</body>
+</html>
